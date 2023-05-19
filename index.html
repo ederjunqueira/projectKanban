@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kanban Board</title>
+  <style>
+     body {
+      font-family: Arial, sans-serif;
+    }
+
+    #board {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    .column {
+      flex: 1;
+      max-width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      background-color: #f5f5f5;
+    }
+
+    .ticket {
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .ticket:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #menu {
+      text-align: right;
+      margin-top: 20px;
+      margin-right: 20px;
+    }
+
+    #ticketForm {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+    }
+
+    #ticketForm h2 {
+      margin-top: 0;
+    }
+
+    #ticketForm label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    #ticketForm input,
+    #ticketForm textarea,
+    #ticketForm select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    #ticketForm button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Customized styles */
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .column h2 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    #menu button {
+      padding: 8px 12px;
+      margin-left: 8px;
+      background-color: #555;
+      color: white;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    #menu button:hover {
+      background-color: #333;
+    }
+
+    #ticketForm textarea {
+      resize: vertical;
+      height: 80px;
+    }
+
+    #ticketForm button:hover {
+      background-color: #45a049;
+    }
+
+    /* Responsiveness */
+
+    @media (max-width: 600px) {
+      #board {
+        flex-wrap: wrap;
+      }
+
+      .column {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="board">
+    <div class="column" id="column1">
+      <h2>Aguardando atendimento</h2>
+    </div>
+    <div class="column" id="column2">
+      <h2>Analisando atendimento</h2>
+    </div>
+    <div class="column" id="column3">
+      <h2>Em Análise pela Squad</h2>
+    </div>
+    <div class="column" id="column4">
+      <h2>Aguardando terceiros</h2>
+    </div>
+    <div class="column" id="column5">
+      <h2>Atendimento encerrado</h2>
+    </div>
+  </div>
+
+  <div id="menu">
+    <button onclick="createTicket()">Criar ticket</button>
+    <button onclick="editTicket()">Editar ticket</button>
+  </div>
+
+  <div id="ticketForm" style="display: none;">
+    <h2>Criar Ticket</h2>
+    <label for="ticketNumber">Número do ticket:</label>
+    <input type="text" id="ticketNumber">
+
+    <label for="ticketName">Nome do ticket:</label>
+    <input type="text" id="ticketName">
+
+    <label for="ticketStatus">Status do ticket:</label>
+    <select id="ticketStatus">
+      <option value="aguardando-atendimento">Aguardando atendimento</option>
+      <option value="analisando-atendimento">Analisando atendimento</option>
+      <option value="em-analise-pela-squad">Em Análise pela Squad</option>
+      <option value="aguardando-terceiros">Aguardando terceiros</option>
+      <option value="atendimento-encerrado">Atendimento encerrado</option>
+    </select>
+
+    <label for="ticketDescription">Descrição do Ticket:</label>
+    <textarea id="ticketDescription"></textarea>
+
+    <label for="ticketIdEc">ID do EC:</label>
+    <input type="text" id="ticketIdEc">
+
+    <label for="ticketCnpjCpf">CNPJ / CPF:</label>
+    <input type="text" id="ticketCnpjCpf">
+
+    <button onclick="saveTicket()">Confirmar</button>
+  </div>
+
+  <script>
+    let tickets = [];
+
+    function createTicket() {
+      document.getElementById('ticketForm').style.display = 'block';
+    }
+
+    function saveTicket() {
+      const ticketNumber = document.getElementById('ticketNumber').value;
+      const ticketName = document.getElementById('ticketName').value;
+      const ticketStatus = document.getElementById('ticketStatus').value;
+      const ticketDescription = document.getElementById('ticketDescription').value;
+      const ticketIdEc = document.getElementById('ticketIdEc').value;
+      const ticketCnpjCpf = document.getElementById('ticketCnpjCpf').value;
+
+      const ticket = {
+        number: ticketNumber,
+        name: ticketName,
+        status: ticketStatus,
+        description: ticketDescription,
+        idEc: ticketIdEc,
+        cnpjCpf: ticketCnpjCpf
+      };
+
+      tickets.push(ticket);
+
+      document.getElementById('ticketForm').style.display = 'none';
+
+      const column = document.getElementById(`column1`); // Inicia na coluna "Aguardando atendimento"
+
+      // Cria um elemento de ticket
+      const ticketElement = document.createElement('div');
+      ticketElement.classList.add('ticket');
+      ticketElement.dataset.ticket = ticket.number;
+      ticketElement.innerHTML = `
+        <p><strong>Número do Ticket:</strong> ${ticketNumber}</p>
+        <p><strong>Nome do Ticket:</strong> ${ticketName}</p>
+        <p><strong>Status do Ticket:</strong> ${ticketStatus}</p>
+        <p><strong>Descrição do Ticket:</strong> ${ticketDescription}</p>
+        <p><strong>ID do EC:</strong> ${ticketIdEc}</p>
+        <p><strong>CNPJ / CPF:</strong> ${ticketCnpjCpf}</p>
+      `;
+
+      // Adiciona o ticket ao final da coluna correspondente
+      column.appendChild(ticketElement);
+    }
+
+    function editTicket() {
+      const ticketNumber = prompt('Digite o número do ticket:');
+      const ticketIndex = tickets.findIndex(t => t.number === ticketNumber);
+
+      if (ticketIndex !== -1) {
+        const ticket = tickets[ticketIndex];
+        const newStatus = prompt('Digite o novo status do ticket:\n\n' +
+                                 'Opções:\n' +
+                                 '1 - Analisando atendimento\n' +
+                                 '2 - Em Análise pela Squad\n' +
+                                 '3 - Aguardando terceiros\n' +
+                                 '4 - Atendimento encerrado');
+
+        let newColumnId;
+
+        switch (newStatus) {
+          case '1':
+            newColumnId = 'column2';
+            break;
+          case '2':
+            newColumnId = 'column3';
+            break;
+          case '3':
+            newColumnId = 'column4';
+            break;
+          case '4':
+            newColumnId = 'column5';
+            break;
+          default:
+            alert('Opção inválida.');
+            return;
+        }
+
+        const oldColumn = document.getElementById('column1');
+        const newColumn = document.getElementById(newColumnId);
+
+        const ticketElement = oldColumn.querySelector(`[data-ticket="${ticket.number}"]`);
+
+        if (ticketElement) {
+          oldColumn.removeChild(ticketElement);
+          newColumn.appendChild(ticketElement);
+        } else {
+          alert('Ticket não encontrado.');
+        }
+      } else {
+        alert('Ticket não encontrado.');
+      }
+    }
+  </script>
+</body>
+</html>
