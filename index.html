@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Kanban Board</title>
   <style>
-     body {
+    body {
       font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #000000, #052555);
+      background-size: 150% 1500px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      color: #05074e;
+      text-align: center;
+    }
+
+    body::after {
+      content: "Q2";
+      position: fixed;
+      bottom: 20px;
+      left: 50px;
+      font-family: "Q2 Bank", Arial, sans-serif;
+      font-size: 100px;
+      font-weight: bold;
+      letter-spacing: 5px;
+      opacity: 0.6;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
     }
 
     #board {
@@ -20,13 +40,14 @@
       border-radius: 5px;
       padding: 10px;
       margin: 10px;
-      background-color: #f5f5f5;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .ticket {
       margin-bottom: 10px;
       padding: 10px;
-      background-color: #fff;
+      background-color: #f9f9f9;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -37,10 +58,23 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    #menu {
-      text-align: right;
-      margin-top: 20px;
-      margin-right: 20px;
+    #menu button {
+      padding: 10px 20px;
+      margin-left: 8px;
+      background-color: #039be5;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #menu button:hover {
+      background-color: #0277bd;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
     }
 
     #ticketForm {
@@ -49,11 +83,15 @@
       padding: 20px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      background-color: #f5f5f5;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     #ticketForm h2 {
       margin-top: 0;
+      font-family: "Q2 Bank", Arial, sans-serif;
+      font-size: 24px;
+      color: royalblue;
     }
 
     #ticketForm label {
@@ -70,6 +108,8 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       background-color: #f9f9f9;
+      color: #333;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     #ticketForm button {
@@ -77,11 +117,14 @@
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      background-color: #4CAF50;
+      background-color: royalblue;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-family: "Q2 Bank", Arial, sans-serif;
+      font-size: 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     /* Customized styles */
@@ -95,20 +138,21 @@
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 10px;
-      color: #444;
+      color: royalblue;
     }
 
     #menu button {
       padding: 8px 12px;
       margin-left: 8px;
-      background-color: #555;
+      background-color: #039be5;
       color: white;
       border-radius: 3px;
       cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     #menu button:hover {
-      background-color: #333;
+      background-color: #0277bd;
     }
 
     #ticketForm textarea {
@@ -117,7 +161,7 @@
     }
 
     #ticketForm button:hover {
-      background-color: #45a049;
+      background-color: #01579b;
     }
 
     /* Responsiveness */
@@ -134,32 +178,33 @@
     }
   </style>
 </head>
+
 <body>
   <div id="board">
     <div class="column" id="column1">
-      <h2>Aguardando atendimento</h2>
+      <h2 style="color: #039be5;">Aguardando atendimento</h2>
     </div>
     <div class="column" id="column2">
-      <h2>Analisando atendimento</h2>
+      <h2 style="color: #0288d1;">Analisando atendimento</h2>
     </div>
     <div class="column" id="column3">
-      <h2>Em Análise pela Squad</h2>
+      <h2 style="color: #0277bd;">Em Análise pela Squad</h2>
     </div>
     <div class="column" id="column4">
-      <h2>Aguardando terceiros</h2>
+      <h2 style="color: #01579b;">Aguardando terceiros</h2>
     </div>
     <div class="column" id="column5">
-      <h2>Atendimento encerrado</h2>
+      <h2 style="color: #01396b;">Atendimento encerrado</h2>
     </div>
   </div>
 
   <div id="menu">
-    <button onclick="createTicket()">Criar ticket</button>
-    <button onclick="editTicket()">Editar ticket</button>
+    <button onclick="createTicket()" style="background-color: #039be5;">Criar ticket</button>
+    <button onclick="editTicket()" style="background-color: #039be5;">Editar ticket</button>
   </div>
 
   <div id="ticketForm" style="display: none;">
-    <h2>Criar Ticket</h2>
+    <h2 style="color: royalblue;">Q2 Bank</h2>
     <label for="ticketNumber">Número do ticket:</label>
     <input type="text" id="ticketNumber">
 
@@ -167,7 +212,7 @@
     <input type="text" id="ticketName">
 
     <label for="ticketStatus">Status do ticket:</label>
-    <select id="ticketStatus">
+    <select id="ticketStatus" style="background-color: #f9f9f9; color: #333;">
       <option value="aguardando-atendimento">Aguardando atendimento</option>
       <option value="analisando-atendimento">Analisando atendimento</option>
       <option value="em-analise-pela-squad">Em Análise pela Squad</option>
@@ -186,7 +231,6 @@
 
     <button onclick="saveTicket()">Confirmar</button>
   </div>
-
   <script>
     let tickets = [];
 
@@ -241,11 +285,11 @@
       if (ticketIndex !== -1) {
         const ticket = tickets[ticketIndex];
         const newStatus = prompt('Digite o novo status do ticket:\n\n' +
-                                 'Opções:\n' +
-                                 '1 - Analisando atendimento\n' +
-                                 '2 - Em Análise pela Squad\n' +
-                                 '3 - Aguardando terceiros\n' +
-                                 '4 - Atendimento encerrado');
+          'Opções:\n' +
+          '1 - Analisando atendimento\n' +
+          '2 - Em Análise pela Squad\n' +
+          '3 - Aguardando terceiros\n' +
+          '4 - Atendimento encerrado');
 
         let newColumnId;
 
@@ -267,21 +311,31 @@
             return;
         }
 
-        const oldColumn = document.getElementById('column1');
-        const newColumn = document.getElementById(newColumnId);
+        const columnIds = ['column1', 'column2', 'column3', 'column4', 'column5'];
+        let oldColumn;
 
-        const ticketElement = oldColumn.querySelector(`[data-ticket="${ticket.number}"]`);
+        for (let i = 0; i < columnIds.length; i++) {
+          const column = document.getElementById(columnIds[i]);
+          const ticketElement = column.querySelector(`[data-ticket="${ticket.number}"]`);
 
-        if (ticketElement) {
+          if (ticketElement) {
+            oldColumn = column;
+            break;
+          }
+        }
+
+        if (oldColumn) {
+          const newColumn = document.getElementById(newColumnId);
+          const ticketElement = oldColumn.querySelector(`[data-ticket="${ticket.number}"]`);
+
           oldColumn.removeChild(ticketElement);
           newColumn.appendChild(ticketElement);
         } else {
           alert('Ticket não encontrado.');
         }
-      } else {
-        alert('Ticket não encontrado.');
       }
     }
   </script>
 </body>
+
 </html>
